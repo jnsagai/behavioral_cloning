@@ -9,7 +9,7 @@ import csv
 import cv2
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Activation
+from keras.layers import Flatten, Dense, Lambda, Activation, Cropping2D
 from keras.layers.convolutional import Conv2D
 from keras.layers.pooling import MaxPooling2D
 
@@ -57,10 +57,11 @@ y_train = np.array(augmented_measurements)
 
 model = Sequential()
 model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape = (160, 320, 3)))
-model.add(Conv2D(6, (3, 3), input_shape=(160, 320, 3)))
+model.add(Cropping2D(cropping=((70,25), (0,0))))
+model.add(Conv2D(6, (3, 3)))
 model.add(MaxPooling2D((2, 2)))
 model.add(Activation('relu'))
-model.add(Conv2D(16, (3, 3), input_shape=(160, 320, 3)))
+model.add(Conv2D(16, (3, 3)))
 model.add(MaxPooling2D((2, 2)))
 model.add(Activation('relu'))
 model.add(Flatten())
@@ -69,7 +70,7 @@ model.add(Dense(84))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=10)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=5)
 
 model.save('model.h5')
 
