@@ -85,7 +85,7 @@ model.add(Conv2D(36, (5, 5), strides = (2,2), activation="relu"))
 model.add(Conv2D(48, (5, 5), strides = (2,2), activation="relu"))
 model.add(Conv2D(64, (3, 3), activation="relu"))
 model.add(Conv2D(64, (3, 3), activation="relu"))
-model.add(Flatten())
+model.add(Flatten())    
 model.add(Dense(100))
 model.add(Dropout(0.2))
 model.add(Dense(50))
@@ -99,7 +99,7 @@ history_object = model.fit_generator(train_generator,
             steps_per_epoch=math.ceil(len(train_samples)/batch_size),
             validation_data=validation_generator,
             validation_steps=math.ceil(len(validation_samples)/batch_size),
-            epochs=20, verbose=1)
+            epochs=7, verbose=1)
 
 model.save('model.h5')
 
