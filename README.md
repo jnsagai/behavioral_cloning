@@ -4,7 +4,7 @@
 
 Overview
 ---
-This repository contains starting files for the Behavioral Cloning Project.
+In this project, I use deep neural networks and convolutional neural networks to clone driving behavior.
 
 # Implementation details
 For more implementation details, please read the [Writeup Report](https://github.com/jnsagai/behavioral_cloning/blob/master/writeup_template.md).
