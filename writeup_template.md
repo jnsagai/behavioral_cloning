@@ -17,16 +17,16 @@ The goals / steps of this project are the following:
 [image1]: ./examples/center.jpg "Center Image"
 [image2]: ./examples/left_side.jpg "Left Drifted Image"
 [image3]: ./examples/recovery_1.jpg "Recovery Image 1"
-[image4]: ./examples/recovery_1.jpg "Recovery Image 2"
-[image5]: ./examples/recovery_1.jpg "Recovery Image 3"
-[image6]: ./examples/recovery_1.jpg "Recovery Image 4"
-[image7]: ./examples/recovery_1.jpg "Recovery Image 5"
-[image8]: ./examples/recovery_1.jpg "Recovery Image 6"
-[image9]: ./examples/recovery_1.jpg "Recovery Image 7"
-[image10]: ./examples/recovery_1.jpg "Recovery Image 8"
-[image11]: ./examples/recovery_1.jpg "Recovery Image 9"
-[image12]: ./examples/recovery_1.jpg "Recovery Image 10"
-[image13]: ./examples/recovery_1.jpg "Recovery Image 11"
+[image4]: ./examples/recovery_2.jpg "Recovery Image 2"
+[image5]: ./examples/recovery_3.jpg "Recovery Image 3"
+[image6]: ./examples/recovery_4.jpg "Recovery Image 4"
+[image7]: ./examples/recovery_5.jpg "Recovery Image 5"
+[image8]: ./examples/recovery_6.jpg "Recovery Image 6"
+[image9]: ./examples/recovery_7.jpg "Recovery Image 7"
+[image10]: ./examples/recovery_8.jpg "Recovery Image 8"
+[image11]: ./examples/recovery_9.jpg "Recovery Image 9"
+[image12]: ./examples/recovery_10.jpg "Recovery Image 10"
+[image13]: ./examples/recovery_11.jpg "Recovery Image 11"
 [image14]: ./examples/normal.jpg "Normal Image"
 [image15]: ./examples/flipped.jpg "Flipped Image"
 [image16]: ./examples/left.jpg "Left Image"
@@ -89,17 +89,47 @@ For details about how I created the training data, see the next section.
 
 ### Model Architecture and Training Strategy
 
+#### 1. An appropriate model architecture has been employed
+
+My model consists of a convolution neural network with 5x5 filter sizes for the first 3 layers and 3x3 for the next 2 layers, and depths between 32 and 64 (clone.py lines 80-94) 
+
+The model includes RELU layers to introduce nonlinearity (code line 83-87), and the data is normalized in the model using a Keras lambda layer (code line 81). 
+
+#### 2. Attempts to reduce overfitting in the model
+
+The model contains dropout layers in order to reduce overfitting (clone.py lines 90 and 92). 
+
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 76-77). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+
+#### 3. Model parameter tuning
+
+The model used an adam optimizer, so the learning rate was not tuned manually (clone.py line 96).
+
+#### 4. Appropriate training data
+
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road.
+I drove the car for both clockwise and counter-clockwise.
+In summary, the following strategy was used:
+ - Five laps of center lane driving in clockwise
+ - Three laps of center lane driving in counter-clockwise
+ - one lap of recovery driving from the sides
+ - one lap focusing on driving smoothly around curves
+
+For details about how I created the training data, see the next section. 
+
+### Model Architecture and Training Strategy
+
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to start with something really simple like a model for linear regression with just one flatten layer. The goal here was just to understand better the pipeline that would be necessary to sucessfully get a model with acceptable perfomance.
+The overall strategy for deriving a model architecture was to start with something really simple like a model for linear regression with just one flatten layer. The goal here was just to understand better the pipeline that would be necessary to successfully get a model with acceptable performance.
 The training data was gathered by just recording one single lap on track one.
 
-In order to optimize the model training and also increase the performace, I normatize all the inputs images and applied a small deviation (clone.py line 81) and also cropped the image to just get the most relavant part: the road (clone.py line 82).
+In order to optimize the model training and also increase the performance, I normalized all the inputs images and applied a small deviation (clone.py line 81) and also cropped the image to just get the most relevant part: the road (clone.py line 82).
 
-After that I evolve my model to a CNN ([LeNet-5](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf) to be more specific, where the results had a significant improvement, and the vehicle as able to stay on the road for the most part of the circuit. However, I noticed that the car was biased to the left side of the road.
-Then I decided to increase my training dataset by recording the car running in sereval laps ( clockwise, counter-clockwise, recoverying from the sides and driving smoothly around curves ). With this new training set I finally got a result where the car could complete an entire lap without touching the side lanes.
+After that, I evolve my model to a CNN ([LeNet-5](http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf) to be more specific, where the results had a significant improvement, and the vehicle as able to stay on the road for the most part of the circuit. However, I noticed that the car was biased to the left side of the road.
+Then I decided to increase my training dataset by recording the car running in several laps ( clockwise, counter-clockwise, recovering from the sides and driving smoothly around curves ). With this new training set, I finally got a result where the car could complete an entire lap without touching the side lanes.
 
-The performance was already acceptable, but the car moving was still oscilaty. Then I decided to implement the same model defined by [NVIDEA End to End Learning for Self-Driving Cars paper](End to End Learning for Self-Driving Cars). And, in order to combat the overfitting, I modified the model and and one dropout layer between each full connected layer.
+The performance was already acceptable, but the car moving was still oscillatory. Then I decided to implement the same model defined by [NVIDEA End to End Learning for Self-Driving Cars paper](End to End Learning for Self-Driving Cars). And, in order to combat the overfitting, I modified the model and one dropout layer between each full connected layer.
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road in a well-smooth manner.
 
@@ -151,7 +181,7 @@ I then recorded the vehicle recovering from the left side and right sides of the
 ![alt text][image12]
 ![alt text][image13]
 
-I used the left and right camera images to increase my dataset and also help my model to learn how to recovery its path to the center of the road. Here is an example of left, center and right camera images:
+I used the left and right camera images to increase my dataset and also help my model to learn how to recover its path to the center of the road. Here is an example of left, center, and right camera images:
 
 ![alt text][image16]
 ![alt text][image1]
@@ -162,9 +192,10 @@ To augment the data set, I also flipped images thinking that this would help my 
 ![alt text][image14]
 ![alt text][image15]
 
-After the collection process, I had 85092 number of data points. I then preprocessed this data by normalizing then and cropping the images for just capturing the road, as explained in the previous session.
+After the collection process, I had an 85092 number of data points. I then preprocessed this data by normalizing then and cropping the images for just capturing the road, as explained in the previous session.
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 7 as evidenced by the Outputting Training and Validation Loss Metrics in the image below. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or underfitting. The ideal number of epochs was 7 as evidenced by the Outputting Training and Validation Loss Metrics in the image below. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
 ![alt text][image18]
