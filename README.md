@@ -6,5 +6,5 @@ Overview
 ---
 This repository contains starting files for the Behavioral Cloning Project.
 
-Implementation details
+# Implementation details
 For more implementation details, please read the [Writeup Report](https://github.com/jnsagai/behavioral_cloning/blob/master/writeup_template.md).
